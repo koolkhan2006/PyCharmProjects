@@ -19,13 +19,13 @@
 </nav>
 
 <div class="jumbotron">
-  <h1>Restaurant Review Analysis</h1>
-  <p>Sentiment analysis using Machine learning models</p>
+  <h1>Tweet Analysis</h1>
+  <p>Twitter Sentiment analysis using Machine learning models</p>
 </div>
 
      <!-- Main Input For Receiving Query to our ML -->
     <form action="{{ url_for('predict')}}"method="post">
-    	<input type="text" name="Review" placeholder="Review" required="required" />
+    	<input type="text" name="Tweet" placeholder="Tweet" required="required" />
         <button type="submit" class="btn btn-primary">Predict</button>
     </form>
 

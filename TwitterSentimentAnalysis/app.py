@@ -8,9 +8,8 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 
-
 app = Flask(__name__)
-model = pickle.load(open('model.pkl', 'rb'))
+model = pickle.load(open('TwitterSentimentAnalysisModel.pkl', 'rb'))
 cv = pickle.load(open('cv.pkl', 'rb'))
 nltk.download('stopwords')
 Bootstrap(app)
@@ -23,12 +22,12 @@ def predict():
     '''
     For rendering results on HTML GUI
     '''
-    review = [x for x in request.form.values()]
-    data = {'Review': review}
+    tweet = [x for x in request.form.values()]
+    data = {'Tweet': tweet}
     df_value = pd.DataFrame(data)
     corpus_value = []
     for i in range(0, len(df_value)):
-        review = re.sub('[^a-zA-z]', ' ', df_value['Review'][i])
+        review = re.sub('[^a-zA-z]', ' ', df_value['Tweet'][i])
         review = review.lower()
         review = review.split()
         review = [word for word in review if not word in set(stopwords.words("english"))]
@@ -42,8 +41,12 @@ def predict():
 
     if(prediction[0] == 0):
         output = 'Negative'
-    else:
+    elif(prediction[0] == 1):
+        output = 'Neutral'
+    elif (prediction[0] == 2):
         output = 'Positive'
+    else:
+        output = 'Cant say'
 
     return render_template('indexbootstrap.html', prediction_text='Predicted sentiment for the review is {}'.format(output))
 
