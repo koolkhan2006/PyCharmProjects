@@ -25,8 +25,8 @@
 
      <!-- Main Input For Receiving Query to our ML -->
     <form action="{{ url_for('predict')}}"method="post">
-    	<input type="text" name="Tweet" placeholder="Tweet" required="required" />
-        <button type="submit" class="btn btn-primary">Predict</button>
+    	<input type="textarea" name="Tweet" placeholder="Tweet" class="form-control" required="required" />
+        <button type="submit" class="btn btn-info">Predict</button>
     </form>
 
    <br>
