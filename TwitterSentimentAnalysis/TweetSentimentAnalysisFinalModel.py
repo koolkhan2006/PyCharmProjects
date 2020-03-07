@@ -3,6 +3,7 @@
 
 import numpy as np
 import pandas as pd
+from imblearn.over_sampling import RandomOverSampler
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split, GridSearchCV
@@ -123,15 +124,16 @@ for i in range(0,len(train)):
     corpus.append(tweet_val)
 
 print(len(corpus))
-# tfidf = TfidfVectorizer(max_features=5250)
+# tfidf = TfidfVectorizer()
 # X = tfidf.fit_transform(corpus).toarray()
 # pickle.dump(tfidf, open('tfidf.pkl','wb'))
-cv = CountVectorizer(max_features=5000)
+cv = CountVectorizer(max_features=5250)
 X = cv.fit_transform(corpus).toarray()
 pickle.dump(cv, open('cv.pkl','wb'))
 y =  train['sentiment'].values
 print(X.shape)
 print(y.shape)
+
 
 print("*"*50)
 print("Dividing the dataset into train and test")
@@ -166,7 +168,7 @@ print("*"*50)
 print("Apply Logistic Regression")
 print("*"*50)
 # log_reg = LogisticRegression(random_state=42,class_weight='balanced',C=1000,max_iter=500)
-log_reg = LogisticRegression(random_state=42)
+log_reg = LogisticRegression(random_state=42,class_weight='balanced',C=500,max_iter=500)
 log_reg.fit(X_train,y_train)
 y_pred = log_reg.predict(X_test)
 print(log_reg.score(X,y))
@@ -178,7 +180,7 @@ print(cr)
 # print("*"*50)
 # print("Executing Random Forest classifier")
 # print("*"*50)
-# rfc = RandomForestClassifier(random_state=42, class_weight = "balanced")
+# rfc = RandomForestClassifier(random_state=42)
 # rfc.fit(X_train,y_train)
 # y_pred = rfc.predict(X_test)
 # rfc.score(X_test,y_test)
@@ -189,4 +191,9 @@ print(cr)
 # print(cr)
 
 # Saving model to disk
-pickle.dump(log_reg, open('TwitterSentimentAnalysisFinalModel.pkl','wb'))
+log_reg_final = LogisticRegression(random_state=42)
+log_reg_final.fit(X,y)
+
+# rfc = RandomForestClassifier(random_state=42)
+# rfc.fit(X,y)
+pickle.dump(log_reg_final, open('TwitterSentimentAnalysisFinalModel.pkl','wb'))
